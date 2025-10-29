@@ -1,0 +1,135 @@
+---
+title: "Task1"
+author: "Arman"
+date: "10/14/2025"
+format:
+  html:
+    embed-resources: true
+editor: source
+---
+
+## Question 1 title
+
+Question description
+
+```{r}
+# code for solving task
+```
+
+
+## Question N title
+
+Question description
+
+```{r}
+# 1) Atomic types ----
+# numeric
+avg_temp_c  <- 23.7
+radius_km   <- 6543.2
+rating      <- 4.6
+gdp_billion <- 312.8
+
+# integer
+n_moons       <- 2L
+n_cities      <- 6L
+inhabitants_m <- 1L
+
+# logical
+has_water    <- TRUE
+is_inhabited <- TRUE
+
+# character
+planet_name <- "Aurelia"
+sector      <- "Theta-9"
+category    <- "Terra-class"
+
+# S
+cat(sprintf(
+  "Planet %s in sector %s (%s): temp=%.1f°C, radius=%.1f km, rating=%.1f, GDP=%.1f bn; moons=%d, cities=%d, inhabitants~%dM; water=%s, inhabited=%s.\n",
+  planet_name, sector, category, avg_temp_c, radius_km, rating, gdp_billion,
+  n_moons, n_cities, inhabitants_m, has_water, is_inhabited
+)) 
+```
+```{r}
+# 2) Vectors
+set.seed(42)
+
+numeric_all <- c(avg_temp_c, radius_km, rating, gdp_billion,
+                 n_moons, n_cities, inhabitants_m)
+numeric_all
+
+seq_vec <- seq(34, 100, by = 8)
+seq_vec
+
+logic_vec <- sample(c(TRUE, FALSE), size = 10, replace = TRUE)
+logic_vec
+## 3) Matrix
+
+```{r}
+res_matrix <- matrix(
+  sample(-50:50, 9, replace = TRUE),
+  nrow = 3, byrow = TRUE,
+  dimnames = list(
+    c("North_Ridge", "Equator_Bay", "South_Crater"),
+    c("Energy", "Water", "Food")
+  )
+)
+res_matrix
+
+rowMeans(res_matrix)
+colMeans(res_matrix)
+```
+## 4) List
+```{r}
+universe_list <- list(
+  avg_temp_c = avg_temp_c,
+  radius_km = radius_km,
+  rating = rating,
+  gdp_billion = gdp_billion,
+  n_moons = n_moons,
+  n_cities = n_cities,
+  inhabitants_m = inhabitants_m,
+  has_water = has_water,
+  is_inhabited = is_inhabited,
+  planet_name = planet_name,
+  sector = sector,
+  category = category,
+  numeric_all = numeric_all,
+  seq_vec = seq_vec,
+  logic_vec = logic_vec,
+  resources = res_matrix,
+  description = "Aurelia is a temperate Terra-class world with six settlements."
+)
+
+str(universe_list)
+```
+## 5) Factor
+planet_class <- factor(
+  c("low", "medium", "high", "medium", "high", "low", "medium"),
+  levels = c("low", "medium", "high"),
+  ordered = TRUE
+)
+planet_class
+
+table(planet_class)
+## 6) Data frame
+planet_df <- data.frame(
+  city = c("Nova","Helios","Maris","Kron","Eden","Luna"),
+  population_mil = c(1.2,0.8,2.3,1.7,0.5,0.9),
+  has_water = c(TRUE, TRUE, TRUE, FALSE, TRUE, FALSE),
+  rating = c(4.8,4.3,4.9,3.9,4.1,4.0),
+  category = factor(c("high","medium","high","medium","low","medium"),
+                    levels = c("low","medium","high"), ordered = TRUE)
+)
+
+names(planet_df) <- c("City","Population_Mil","Has_Water","Rating","Category")
+
+str(planet_df)
+summary(planet_df)
+
+planet_df$Water_Rating_Ratio <- ifelse(
+  planet_df$Has_Water, planet_df$Rating / planet_df$Population_Mil, NA
+)
+
+planet_df
+
