@@ -1,0 +1,123 @@
+---
+title: "Task2"
+author: "Arman"
+output:
+  html_document:
+    self_contained: true
+---
+
+## Task 2: Subsetting & Missing Data
+
+### Load objects from Task1 (we need them here again)
+
+```{r}
+avg_temp_c  <- 23.7
+radius_km   <- 6543.2
+rating      <- 4.6
+gdp_billion <- 312.8
+
+n_moons       <- 2L
+n_cities      <- 6L
+inhabitants_m <- 1L
+
+has_water    <- TRUE
+is_inhabited <- TRUE
+
+planet_name <- "Aurelia"
+sector      <- "Theta-9"
+category    <- "Terra-class"
+
+set.seed(42)
+
+numeric_all <- c(avg_temp_c, radius_km, rating, gdp_billion,
+                 n_moons, n_cities, inhabitants_m)
+
+seq_vec <- seq(34,100,by=8)
+
+logical_vec <- sample(c(TRUE,FALSE),size=10,replace=TRUE)
+
+res_matrix <- matrix(
+  sample(-50:50,9,replace=TRUE),
+  nrow=3,byrow=TRUE,
+  dimnames=list(
+    c("North_Ridge","Equator_Bay","South_Crater"),
+    c("Energy","Water","Food")
+  )
+)
+
+universe_list <- list(
+  seq_vec = seq_vec,
+  logical_vec = logical_vec,
+  resources=res_matrix,
+  description="Aurelia is a temperate Terra-class world with six settlements."
+)
+
+planet_df <- data.frame(
+  City=c("Nova","Helios","Maris","Kron","Eden","Luna"),
+  Population_Mil=c(1.2,0.8,2.3,1.7,0.5,0.9),
+  Has_Water=c(TRUE,TRUE,TRUE,FALSE,TRUE,FALSE),
+  Rating=c(4.8,4.3,4.9,3.9,4.1,4.0),
+  Category=factor(c("high","medium","high","medium","low","medium"),
+                  levels=c("low","medium","high"),ordered=TRUE)
+)
+planet_df$Water_Rating_Ratio <- ifelse(planet_df$Has_Water, planet_df$Rating/planet_df$Population_Mil,NA)
+```
+
+---
+
+## 2.1 Querying Vectors
+
+```{r}
+seq_vec[3]
+seq_vec[2:5]
+seq_vec[seq_vec > 20]
+
+logical_vec[logical_vec]
+which(logical_vec)
+```
+
+## 2.2 Querying Universe List
+
+```{r}
+universe_list$description
+universe_list[[ "resources" ]]
+universe_list$seq_vec[2]
+```
+
+## 2.3 Investigating Data Frame
+
+```{r}
+head(planet_df,3)
+planet_df[4,1]
+planet_df$Has_Water
+
+df_subset <- planet_df[planet_df$Population_Mil > 1.5, ]
+df_subset
+
+df_subset_2 <- planet_df[planet_df$Category %in% c("high","medium"), ]
+df_subset_2
+```
+
+## 2.4 Handling NA
+
+```{r}
+df_corrupted <- planet_df
+df_corrupted[2,3] <- NA
+df_corrupted[5,4] <- NA
+df_corrupted[6,5] <- NA
+
+sum(is.na(df_corrupted))
+colSums(is.na(df_corrupted))
+
+mean(df_corrupted$Rating,na.rm=TRUE)
+
+df_clean <- na.omit(df_corrupted)
+df_clean
+```
+
+## 2.5 Bonus
+
+```{r}
+highest_pop_index <- which.max(planet_df$Population_Mil)
+planet_df[highest_pop_index, ]
+```
