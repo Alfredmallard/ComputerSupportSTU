@@ -1,0 +1,63 @@
+---
+title: "Task3"
+author: "Arman"
+format: html
+editor: source
+---
+
+```{r}
+# Load dplyr and read CSV
+library(dplyr)
+
+emperors <- read.csv("emperors.csv", stringsAsFactors = FALSE)
+
+str(emperors)
+head(emperors)
+summary(emperors)
+```
+## dplyr Analysis
+
+```{r}
+library(dplyr)
+```
+
+### Q1
+```{r}
+library(dplyr)
+emperors %>% 
+  select(name, reign_start, reign_end) %>% 
+  arrange(desc(reign_end))
+```
+
+### Q2
+```{r}
+emperors %>% 
+  filter(killer == "Assassination")
+```
+
+
+### Q3
+```{r}
+emperors %>%
+  mutate(age = as.numeric(death) - as.numeric(birth)) %>%
+  select(name, age)
+```
+
+### Q4
+```{r}
+emperors %>% 
+  group_by(killer) %>% 
+  summarise(count = n())
+```
+
+### Q5
+```{r}
+emperors %>%
+  mutate(
+    birth_num = as.numeric(birth),
+    death_num = as.numeric(death),
+    age = death_num - birth_num
+  ) %>%
+  arrange(desc(age)) %>%
+  head(10)
+```
