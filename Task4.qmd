@@ -1,0 +1,50 @@
+---
+title: "Task4"
+author: "Arman"
+format: html
+editor: source
+---
+
+```{r}
+library(readr)
+library(dplyr)
+emperors <- read_csv("emperors.csv")
+```
+
+```{r}
+welcome_universe <- function(your_name, universe_name) {
+  cat("--------------------------------\n")
+  cat("Analysis Toolkit for:", universe_name, "\n")
+  cat("Report prepared by:", your_name, "\n")
+  cat("--------------------------------\n\n")
+}
+
+welcome_universe("Arman", "Roman Empire")
+```
+
+```{r}
+load_and_inspect <- function(file_path) {
+  data <- read_csv(file_path)
+  cat("--- Data Loaded Successfully ---\n")
+  glimpse(data)
+  head(data)
+  return(data)
+}
+
+emperors <- load_and_inspect("emperors.csv")
+
+find_assassinated <- function(data) {
+  data %>% filter(killer == "Assassination")
+}
+
+report_assassinations <- function(data, killer_type) {
+  filtered <- data %>% filter(killer == killer_type)
+  cat("-------- Report --------\n")
+  cat("Deaths by:", killer_type, "\n")
+  cat("Count:", nrow(filtered), "\n")
+  cat("------------------------\n\n")
+}
+
+find_assassinated(emperors)
+report_assassinations(emperors, "Assassination")
+```
