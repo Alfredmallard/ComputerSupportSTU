@@ -1,0 +1,62 @@
+---
+title: "Task5"
+author: "Arman"
+format: html
+editor: source
+---
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+emperors <- read_csv("emperors.csv", show_col_types = FALSE)
+
+emperors <- emperors %>%
+  mutate(
+    birth_num = as.numeric(birth),
+    death_num = as.numeric(death),
+    age = death_num - birth_num
+  ) %>%
+  filter(!is.na(age))
+
+hist(
+  emperors$age,
+  main = "Distribution of Emperors' Age at Death",
+  xlab = "Age at Death (years)",
+  col = "lightblue",
+  border = "white"
+)
+
+p_scatter <- ggplot(emperors, aes(x = birth_num, y = age)) +
+  geom_point(alpha = 0.7, size = 3, colour = "blue") +
+  geom_smooth(se = FALSE, colour = "gray") +
+  labs(
+    title = "Age at Death vs Birth Year",
+    x = "Birth Year",
+    y = "Age at Death (years)"
+  ) +
+  theme_minimal()
+p_scatter
+
+ggplot(emperors, aes(x = killer, y = age, fill = killer)) +
+  geom_boxplot() +
+  labs(
+    title = "Age at Death by Killer",
+    x = "Killer",
+    y = "Age at Death (years)"
+  ) +
+  theme_light() +
+  theme(legend.position = "none")
+
+ggplot(emperors, aes(x = age)) +
+  geom_histogram(bins = 15, fill = "coral", color = "black") +
+  facet_wrap(~ killer) +
+  labs(
+    title = "Age Distribution by Killer",
+    x = "Age at Death (years)",
+    y = "Count"
+  )
+
+ggsave("Task5_plot.png", plot = p_scatter, width = 8, height = 6)
+```
